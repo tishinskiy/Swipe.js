@@ -5,48 +5,52 @@
 	$.fn.Swipe = function(options){
 
 		var block = $(this);
-		// var active;
-		// var index = 0;
-
-		// var defaults = {
-		// 	actions: {}
-		// }
-
 		var touch = false;
 		var posX = 0;
-		var sb = block.find('.swipe--content');
-		var tl = parseInt(sb.css('left'));
+		var move = block.find('.swipe--content');
+		var tl;
+		var mw = move[0].scrollWidth;
 
 		var blockMove = function(e){
-			console.log(touch);
-			sb.css({left: tl + (-(posX - e.pageX))});
+			ml = tl + (-(posX - e))
+			if (ml > 0) {ml = 0}
+			if ((block.innerWidth() - ml) > mw) {ml = -( mw - block.innerWidth())}
+			move.css({left: ml});
 		}
-
-		// var options = $.extend({}, defaults, options);
 
 		block.bind(
 			{
-				mousedown: function(e){
+				mousedown : function(e){
 					touch = true;
 					posX = e.pageX;
-					tl = parseInt(sb.css('left'));
+					tl = parseInt(move.css('left'));
+				},
+				touchstart: function(e){
+					touch = true;
+					posX = e.originalEvent.touches[0].pageX;
+					tl = parseInt(move.css('left'));
 				},
 				mouseup: function(e){
 					touch = false;
-					console.log(touch);
 				},
-				mouseout: function(e){
+				touchend: function(e){
+					touch = false;
+				},
+				mouseleave: function(e){
 					touch = false;
 				},
 				mousemove: function(e){
 					if(touch == true) {
-						blockMove(e);
+						blockMove(e.pageX);
+					}
+				},
+				touchmove: function(e){
+					if(touch == true) {
+						blockMove(e.originalEvent.touches[0].pageX);
 					}
 				}
 			}
 		)
-
-
 	}
 
 })();
