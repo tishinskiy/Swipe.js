@@ -9,7 +9,7 @@
 		var posX = 0;
 		var move = block.find('.swipe--content');
 		var tl;
-		var mw = move[0].scrollWidth;
+		var mw = 0;
 
 		var blockMove = function(e){
 			ml = tl + (-(posX - e))
@@ -24,11 +24,13 @@
 					touch = true;
 					posX = e.pageX;
 					tl = parseInt(move.css('left'));
+					mw = move[0].scrollWidth;
 				},
 				touchstart: function(e){
 					touch = true;
 					posX = e.originalEvent.touches[0].pageX;
 					tl = parseInt(move.css('left'));
+					mw = move[0].scrollWidth;
 				},
 				mouseup: function(e){
 					touch = false;
